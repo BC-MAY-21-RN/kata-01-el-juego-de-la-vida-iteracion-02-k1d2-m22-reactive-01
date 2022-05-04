@@ -1,10 +1,33 @@
 class Cell {
-  constructor(status, x, y) {
-    this._status = status;
-    this._x = x;
-    this._y = y;
+  constructor(status, vecinos) {
+    this._status = status; //muerto ., viva *
+    this._vecinos = vecinos;
+  }
+  getState() {
+    return this._status;
+  }
+  setState(newState) {
+    this._status = newState;
+  }
+
+  escuchar_estado() {
+    if (this._vecinos < 2 && this._status == "*") {
+      this._status = ".";
+    } else if (this._vecinos > 3 && this._status == "*") {
+      this._status = ".";
+    } else if ((this._vecinos == 3 || this._vecinos == 2) && this._status == "*") {
+      this._status = "*";
+    } else if (this._vecinos == 3 && this._status == ".") {
+      this._status = "*";
+    }else {
+        console.log("El parametro obtenido no pertenece a ningun caso ");
+    }
+
+    console.log("prueba");
+    return this._status;
   }
 }
+
 class Table {
   constructor(x, y, cadena) {
     this.matriz = this.rellenarMatriz(x,y,cadena);
@@ -30,4 +53,7 @@ class Table {
 }
 
 var tabla = new Table(10, 10, ".......*....***.");
+var celula = new Cell("*",3);
+
 console.log(tabla.matriz);
+console.log(celula.escuchar_estado());
