@@ -9,6 +9,7 @@ class Cell {
     this._status = newState;
   }
 }
+
 class Table {
   constructor(x, y, cadena) {
     this.matriz = this.rellenarMatriz(x, y, cadena);
@@ -43,7 +44,7 @@ class Table {
   ["-"],["-"],["-"],["-"]
   */
 
-  vecinosVivos(x,y) {
+  vecinosVivos(x, y) {
     var vecinosVivos = 0;
     const objeto = {
       esquinaSuperiorIzquierda: (fila, columna) => {
@@ -99,46 +100,36 @@ class Table {
         }
       },
     }
-    Object.keys(objeto).forEach(key => objeto[key](x, y) )
+    Object.keys(objeto).forEach(key => objeto[key](x, y))
     return vecinosVivos;
   }
 
-  imprimirMatriz(){
-
+  imprimirMatriz(fila = 0) {
+    var cadena = "";
+    if (fila == this.matriz.length) return "\n";
+    this.matriz[fila].forEach(obj => {
+      cadena = cadena + obj.getState();
+    })
+    return cadena + "\n" + this.imprimirMatriz(fila + 1);
   }
 
+  reglas() {
+    for (let i = 0; i < this.matriz.length(); i++) {
+      for (let j = 0; j <= this.matriz.length(); j++) {
+        vivas = vecinosVivos(i, j);
+        if (array[i][j].getState() == '*' && vivas < 2) {
+          this.matriz[i][j].setState() = '.';
+        } else if (array[i][j].getState() == '*' && vivas > 3) {
+          this.matriz[i][j].setState() = '.';
+        } else if (array[i][j].getState() == '.' && vivas == 3) {
+          this.matriz[i][j].setState() = '*';
+        }
+      }
+    }
+    return this.matriz;
+  }
 }
 
 var tabla = new Table(10, 10, ".......*....**....**.");
-console.log(tabla.vecinosVivos(3,3));
-
-/*function counter (tablero, x, y) {
-  // Movimiento hacia los vecinos
-  let moveX = new Array(0, 0, 1, -1, -1, -1, 1, 1);
-  let moveY = new Array(1, -1, 0, 0, 1, -1, -1, 1);
-  let cnt = 0;
-  for (let cell = 0; cell < 8; cell++) {
-    let mox = x + moveX[cell];
-    let moy = y + moveY[cell];
-    if (tablero[mox][moy] == '*') {
-      cnt += 1;
-    }
-  }
-  return cnt;
-}
-
-isAliveOrDead() {
-  for (let i= 1; i < this.matriz.length() - 1; i++){
-    for(let j = 1; j <= this.matriz.length() -1; j++){
-        vivas = counter(array,i,j);
-        if (array[i][j] == '*' && vivas < 2) {
-            this.matriz[i][j] = '.';
-        } else if (array[i][j] == '*' && vivas > 3) {
-            this.matriz[i][j] = '.';
-        } else if (array[i][j] == '.' && vivas == 3) {
-            this.matriz[i][j] = '*';
-        }
-    }
-}
-return this.matriz;
-}*/
+console.log(tabla.imprimirMatriz(0));
+console.log(tabla.vecinosVivos(3, 3));
